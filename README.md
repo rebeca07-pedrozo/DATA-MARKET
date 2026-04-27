@@ -18,7 +18,7 @@ y OAuth2 — sin carga manual de CSV.
 Necesito que me ayudes a:
 
 1. Implementar ECLAT con pyECLAT (no Apriori) sobre la matriz one-hot de 45 productos
-   y calcular soporte, confianza, lift, conviction, leverage y Zhang por cada regla.
+   y calcular soporte, confianza, lift, conviction, leverage y Zhang por cada regla. Vamos a estar utilizando tripletes, pues es la combinación ideal para nuestro numero de datos tener soporte estadístico y la capacidad de colab :)
 
 2. Hacer un EDA demográfico completo (estrato, edad, hogar, frecuencia, género,
    presupuesto) y un análisis de canales con correlación phi entre canales binarios.
