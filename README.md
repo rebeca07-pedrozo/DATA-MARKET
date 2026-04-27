@@ -4,40 +4,23 @@
 
 Este proyecto fue desarrollado con apoyo de Claude (Anthropic) como asistente de análisis, redacción técnica y generación de código. El prompt base que guió el trabajo fue el siguiente:
 
-```
-Actúa como un analista de datos senior especializado en Market Basket Analysis con ECLAT.
+``` 
+Tengo un proyecto de Market Basket Analysis con datos de hogares colombianos recolectados en Google Forms. Los datos se limpian automáticamente con Apps Script (one-hot encoding y normalización de ciudades)
+y se organizan en arquitectura Medallion: Bronze (crudo), Silver (limpio en Sheets) y Gold (análisis en Colab). El notebook se conecta directamente a la capa Silver con gspread y OAuth2, entonces no te preocupes por la carga de csv ni nada.
 
-Tengo un dataset de encuesta propia sobre hábitos de compra de hogares colombianos
-recolectado con Google Forms, limpiado automáticamente mediante un Trigger de Google
-Apps Script (one-hot encoding de productos y canales, normalización geográfica) y
-almacenado en Google Sheets con arquitectura Medallion (Bronze → Silver → Gold).
+Realiza el análisis usando ECLAT (pyECLAT), con soporte ≥ 30%, confianza ≥ 60% y máximo tripletes (k=3).
 
-El cuaderno de Google Colab se conecta automáticamente a la hoja Silver vía gspread
-y OAuth2 — sin carga manual de CSV.
+Genera reglas de asociación incluyendo soporte, confianza, lift (>1), conviction, leverage y Zhang.
 
-Necesito que me ayudes a:
+En el EDA incluye variables como estrato, edad, tamaño del hogar, frecuencia de compra, género y presupuesto. Para variables binarias usa correlación phi y similitud Jaccard en co-ocurrencias.
 
-1. Implementar ECLAT con pyECLAT (no Apriori) sobre la matriz one-hot de 45 productos
-   y calcular soporte, confianza, lift, conviction, leverage y Zhang por cada regla. Vamos a estar utilizando tripletes, pues es la combinación ideal para nuestro numero de datos tener soporte estadístico y la capacidad de colab :)
+Segmenta por estrato y grupo etario, usando soporte adaptativo: max(0.20, 3/n).
 
-2. Hacer un EDA demográfico completo (estrato, edad, hogar, frecuencia, género,
-   presupuesto) y un análisis de canales con correlación phi entre canales binarios.
+Visualiza con:
 
-3. Calcular similitud Jaccard entre los top-20 productos (más robusto que Pearson
-   para datos binarios).
-
-4. Segmentar el análisis por estrato NSE y grupo etario, con umbral de soporte
-   adaptativo (max(0.20, 3/n)) para no penalizar segmentos pequeños.
-
-5. Construir un grafo de reglas con NetworkX donde el tamaño del nodo sea la
-   centralidad de grado, el grosor del arco la confianza y el color el lift.
-
-6. Generar visualizaciones interactivas con Plotly (scatter soporte × confianza × lift)
-   y un dashboard ejecutivo de 4 paneles.
-
-El código debe estar comentado explicando el por qué, no el qué. Las funciones
-deben tener docstrings. Usa umbrales adaptativos en segmentación. Exporta los
-resultados a Excel multicapa como capa Gold del pipeline.
+Grafo en NetworkX (nodo = centralidad, arco = confianza y lift)
+Gráficos interactivos en Plotly (scatter soporte vs confianza, tamaño = lift)
+Dashboard ejecutivo final
 ```
 
 > La IA ayudó con la implementación y redacción, pero las decisiones de diseño del pipeline, la elección de ECLAT sobre Apriori, el diseño del formulario, el ETL en Apps Script y la interpretación de los hallazgos en contexto colombiano fueron propias de Rebeca.
